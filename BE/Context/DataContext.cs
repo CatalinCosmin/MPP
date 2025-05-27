@@ -26,7 +26,7 @@ public class DataContext : DbContext
 	{
 		if (!optionsBuilder.IsConfigured)
 		{
-			optionsBuilder.UseSqlServer("Server=localhost;Database=CarManager;TrustServerCertificate=true;");
+			optionsBuilder.UseSqlServer("Host=dpg-d0r0q27diees73bnrjig-a;Database=carmanagerdb;Username=carmanagerdb_user;Password=mVUxtnIUIlh6KwMc4LqLxkCUCcDoTRX0");
 		}
 	}
 
