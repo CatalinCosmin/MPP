@@ -18,7 +18,7 @@ export const HomePage = () => {
 
     const offsetRef = useRef(0);
 
-    const fetchMoreCars = async () => {
+    const fetchMoreCars =  useCallback(async () => {
         if (loading) return;
 
         setLoading(true);
@@ -42,7 +42,7 @@ export const HomePage = () => {
             });
 
         setLoading(false);
-    };
+    }, [searchQuery, loading]);
 
     useEffect(() => {
         const connection = new signalR.HubConnectionBuilder()
@@ -68,7 +68,7 @@ export const HomePage = () => {
         return () => {
             connection.stop();
         };
-    }, [cars]);
+    }, []);
 
 
     const handleScroll = () => {
@@ -99,7 +99,7 @@ export const HomePage = () => {
     }, [loading, offsetRef, searchQuery]);
 
     useEffect(() => {
-        setCars([]);
+        fetchMoreCars();
         offsetRef.current = 0;
         setMostExpensivePrice(null);
         setLeastExpensivePrice(null);
