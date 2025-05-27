@@ -11,7 +11,7 @@ public static class DatabaseSeeder
 		var ownerFaker = new Faker<Owner>()
 			.RuleFor(o => o.Name, f => f.Name.FullName());
 
-		var owners = ownerFaker.Generate(100_000);
+		var owners = ownerFaker.Generate(10_000);
 		await context.Owners.AddRangeAsync(owners);
 		await context.SaveChangesAsync();
 
@@ -27,7 +27,7 @@ public static class DatabaseSeeder
 			.RuleFor(c => c.Price, f => f.Random.Int(15_000, 80_000))
 			.RuleFor(c => c.OwnerId, f => f.PickRandom(insertedOwners));
 
-		var cars = carFaker.Generate(100_000);
+		var cars = carFaker.Generate(10_000);
 		await context.Cars.AddRangeAsync(cars);
 		await context.SaveChangesAsync();
 	}
