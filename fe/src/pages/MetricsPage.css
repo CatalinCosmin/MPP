@@ -1,0 +1,13 @@
+.metrics-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.metric-card {
+    width: 40vw;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}

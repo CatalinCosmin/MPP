@@ -1,0 +1,10 @@
+.navBar {
+    background-color: #B17F59;
+    justify-content: center;
+}
+
+.ant-menu-item-selected {
+    color: black !important;
+    font-weight: bold;
+    background-color: #C1CFA1 !important;
+}

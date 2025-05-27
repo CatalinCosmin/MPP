@@ -1,0 +1,23 @@
+.body {
+    width: 100%;
+    justify-content: center;
+}
+
+.dataTableContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.dataTableWrapper {
+    width: 80%;
+    align-self: center;
+}
+
+.most-expensive {
+    background-color: #ffcccc !important; /* Light red */
+}
+
+.least-expensive {
+    background-color: #ccffcc !important; /* Light green */
+}

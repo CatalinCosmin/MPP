@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: 597487097340.dkr.ecr.eu-north-1.amazonaws.com/carmanagerfe:latest
+    ports:
+      - "80:80"
+    deploy:
+      x-aws-policies:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      x-aws-loadbalancer:
+        targetGroupArn: arn:aws:elasticloadbalancing:eu-north-1:597487097340:targetgroup/fetg/a5af92267cb913b8
+
+  backend:
+    image: 597487097340.dkr.ecr.eu-north-1.amazonaws.com/carmanagerbe:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarManager;User Id=sa;Password=Str0ng!P@ssw0rd;TrustServerCertificate=true;
+    deploy:
+      x-aws-policies:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      x-aws-loadbalancer:
+        targetGroupArn: arn:aws:elasticloadbalancing:eu-north-1:597487097340:targetgroup/betg/c0b1854739cb6a22
+

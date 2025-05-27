@@ -1,6 +1,0 @@
-@CarManager_HostAddress = http://localhost:5036
-
-GET {{CarManager_HostAddress}}/car/
-Accept: application/json
-
-###

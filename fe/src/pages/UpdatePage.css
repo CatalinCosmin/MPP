@@ -1,0 +1,24 @@
+.formCard {
+    background-color: #D9D9D9;
+    width: 80%;
+    margin-top: 10vh;
+    padding-top: 5vh;
+    border-radius: 60px;
+}
+
+.formWrapper {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+}
+
+.submitButtonWrapper {
+    width: 100%;
+    justify-content: center;
+}
+
+.submitButton {
+    background-color: #C1CFA1;
+    width: 50% !important;
+    color: black;
+}
