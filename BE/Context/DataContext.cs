@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Reflection.Emit;
 
 namespace BE.Context;
@@ -26,7 +28,7 @@ public class DataContext : DbContext
 	{
 		if (!optionsBuilder.IsConfigured)
 		{
-			optionsBuilder.UseSqlServer("Host=dpg-d0r0q27diees73bnrjig-a;Database=carmanagerdb;Username=carmanagerdb_user;Password=mVUxtnIUIlh6KwMc4LqLxkCUCcDoTRX0");
+			optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
 		}
 	}
 

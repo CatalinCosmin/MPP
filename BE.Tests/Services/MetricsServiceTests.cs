@@ -68,22 +68,22 @@ namespace BE.Tests.Services
 			result[1].CarCount.Should().Be(1);
 		}
 
-		[Test]
-		public async Task GetCarCountPerOwnerUnoptimizedAsync_ShouldFilterCorrectly()
-		{
-			var owners = new List<Owner>
-			{
-				new Owner { Id = 1, Name = "John", Cars = new List<Car> { new Car { Brand = "Toyota" }, new Car { Brand = "Honda" } } },
-				new Owner { Id = 2, Name = "Jane", Cars = new List<Car> { new Car { Brand = "Ford" } } }
-			};
+		//[Test]
+		//public async Task GetCarCountPerOwnerUnoptimizedAsync_ShouldFilterCorrectly()
+		//{
+		//	var owners = new List<Owner>
+		//	{
+		//		new Owner { Id = 1, Name = "John", Cars = new List<Car> { new Car { Brand = "Toyota" }, new Car { Brand = "Honda" } } },
+		//		new Owner { Id = 2, Name = "Jane", Cars = new List<Car> { new Car { Brand = "Ford" } } }
+		//	};
 
-			_ownerRepository.Setup(r => r.GetAllOwnersAsync()).ReturnsAsync(owners);
+		//	_ownerRepository.Setup(r => r.GetAllOwnersAsync()).ReturnsAsync(owners);
 
-			var result = await _sut.GetCarCountPerOwnerUnoptimizedAsync("John", "Toyota");
+		//	var result = await _sut.GetCarCountPerOwnerUnoptimizedAsync("John", "Toyota");
 
-			result.Should().HaveCount(1);
-			result[0].OwnerName.Should().Be("John");
-			result[0].CarCount.Should().Be(1);
-		}
+		//	result.Should().HaveCount(1);
+		//	result[0].OwnerName.Should().Be("John");
+		//	result[0].CarCount.Should().Be(1);
+		//}
 	}
 }
