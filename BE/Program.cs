@@ -38,7 +38,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddDbContext<DataContext>(options =>
-	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+	options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();	
@@ -63,7 +63,7 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddHealthChecks();
 
 builder.Services.AddSignalR();
-builder.Services.AddHostedService<CarGeneratorService>();
+builder.Services.AddSingleton<CarGeneratorService>();
 
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IMonitoredUsersService, MonitoredUsersService>();

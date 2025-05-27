@@ -1,17 +1,14 @@
 ﻿using BE.Context;
 using BE.SignalR;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
 using Bogus;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
 
-namespace BE.Services;
-
-public class CarGeneratorService : BackgroundService
+public class CarGeneratorService
 {
 	private readonly IHubContext<EntityHub> _hubContext;
 	private readonly IServiceProvider _serviceProvider;
-	private Faker<Car> _carFaker;
+	private CancellationTokenSource _cts;
+	private Task _runningTask;
 
 	public CarGeneratorService(IHubContext<EntityHub> hubContext, IServiceProvider serviceProvider)
 	{
@@ -19,19 +16,33 @@ public class CarGeneratorService : BackgroundService
 		_serviceProvider = serviceProvider;
 	}
 
-	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+	public void Start()
 	{
-		while (!stoppingToken.IsCancellationRequested)
+		if (_runningTask != null && !_runningTask.IsCompleted)
+			return; // already running
+
+		_cts = new CancellationTokenSource();
+		_runningTask = Task.Run(() => GenerateCars(_cts.Token));
+	}
+
+	public void Stop()
+	{
+		_cts?.Cancel();
+	}
+
+	private async Task GenerateCars(CancellationToken token)
+	{
+		while (!token.IsCancellationRequested)
 		{
-			await Task.Delay(2000, stoppingToken);
+			await Task.Delay(2000, token);
 
 			using var scope = _serviceProvider.CreateScope();
 			var carRepository = scope.ServiceProvider.GetRequiredService<ICarRepository>();
 			var context = scope.ServiceProvider.GetRequiredService<DataContext>();
 
-			var insertedOwners = await context.Owners.AsNoTracking().Select(o => o.Id).ToListAsync();
+			var insertedOwners = await context.Owners.AsNoTracking().Select(o => o.Id).ToListAsync(token);
 
-			_carFaker = new Faker<Car>()
+			var carFaker = new Faker<Car>()
 				.RuleFor(c => c.Id, f => Guid.NewGuid())
 				.RuleFor(c => c.Name, f => $"{f.Vehicle.Manufacturer()} {f.Vehicle.Model()} {Guid.NewGuid().ToString()[..8]}")
 				.RuleFor(c => c.Brand, f => f.Vehicle.Manufacturer())
@@ -41,8 +52,7 @@ public class CarGeneratorService : BackgroundService
 				.RuleFor(c => c.Price, f => f.Random.Int(10_000, 90_000))
 				.RuleFor(c => c.OwnerId, f => f.PickRandom(insertedOwners));
 
-			var car = _carFaker.Generate();
-
+			var car = carFaker.Generate();
 			await carRepository.AddCar(car);
 
 			Console.WriteLine("new car: " + car.Name);
