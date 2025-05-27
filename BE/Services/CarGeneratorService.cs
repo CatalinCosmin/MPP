@@ -2,6 +2,7 @@
 using BE.SignalR;
 using Bogus;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 public class CarGeneratorService
 {

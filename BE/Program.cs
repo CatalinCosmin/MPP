@@ -98,7 +98,17 @@ app.UseSwaggerUI();
 app.MapHealthChecks("/health");
 app.MapHub<EntityHub>("/entityhub");
 
-app.UseCors();
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowFrontend", builder =>
+	{
+		builder.WithOrigins("https://your-frontend.onrender.com")
+			   .AllowAnyMethod()
+			   .AllowAnyHeader();
+	});
+});
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
