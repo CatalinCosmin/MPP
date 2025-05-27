@@ -12,9 +12,9 @@ import { RegisterPage } from './pages/RegisterPage';
 import { ConnectivityService } from './services/ConnectivityService';
 import { CarRepository } from './DataSource';
 import { OfflineQueue } from './services/OfflineQueue';
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 
-const ProtectedRoute = ({ element, allowed }: { element: JSX.Element, allowed: boolean }) => {
+const ProtectedRoute = ({ element, allowed }: { element: any, allowed: boolean }) => {
   return allowed ? element : <Navigate to="/login" />;
 };
 
