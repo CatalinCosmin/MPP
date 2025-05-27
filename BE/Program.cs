@@ -28,11 +28,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-	options.AddDefaultPolicy(policy =>
+	options.AddPolicy("AllowFrontend", policyBuilder =>
 	{
-		policy.WithOrigins("http://localhost:3000", "https://localhost:7092")
-			  .AllowAnyHeader()
-			  .AllowAnyMethod()
+		policyBuilder.WithOrigins(builder.Configuration["frontendurl"], "http://localhost:3000", "https://localhost:7092")
+			   .AllowAnyMethod()
+			   .AllowAnyHeader()
 			  .AllowCredentials();
 	});
 });
@@ -97,16 +97,6 @@ app.UseSwaggerUI();
 
 app.MapHealthChecks("/health");
 app.MapHub<EntityHub>("/entityhub");
-
-builder.Services.AddCors(options =>
-{
-	options.AddPolicy("AllowFrontend", builder =>
-	{
-		builder.WithOrigins("https://your-frontend.onrender.com")
-			   .AllowAnyMethod()
-			   .AllowAnyHeader();
-	});
-});
 
 app.UseCors("AllowFrontend");
 
