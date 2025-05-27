@@ -1,6 +1,4 @@
-// src/App.tsx
-
-import { AuthProvider } from "./pages/AuthContext";
+import { AuthProvider, useAuth } from "./pages/AuthContext";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { HomePage } from './pages/HomePage';
 import { NavigationMenu } from './components/NavigationMenu';
@@ -16,29 +14,14 @@ import { CarRepository } from './DataSource';
 import { OfflineQueue } from './services/OfflineQueue';
 import { useEffect, useState } from "react";
 
-const ProtectedRoute = ({ element, allowed }: { element: any, allowed: boolean }) => {
+const ProtectedRoute = ({ element, allowed }: { element: JSX.Element, allowed: boolean }) => {
   return allowed ? element : <Navigate to="/login" />;
 };
 
-const App = () => {
+const AppContent = () => {
+  const { isAuthenticated, role } = useAuth();
   const [networkDown, setNetworkDown] = useState(false);
   const [serverDown, setServerDown] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [role, setRole] = useState<string | null>(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        setRole(payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
-        setIsAuthenticated(true);
-      } catch {
-        setIsAuthenticated(false);
-        setRole(null);
-      }
-    }
-  }, []);
 
   useEffect(() => {
     let syncing = false;
@@ -84,7 +67,7 @@ const App = () => {
   });
 
   return (
-    <AuthProvider>
+    <>
       {renderConnectionMessage()}
       <BrowserRouter>
         <NavigationMenu />
@@ -100,8 +83,14 @@ const App = () => {
           <Route path='/register' element={<RegisterPage />} />
         </Routes>
       </BrowserRouter>
-    </AuthProvider>
+    </>
   );
 };
+
+const App = () => (
+  <AuthProvider>
+    <AppContent />
+  </AuthProvider>
+);
 
 export default App;
