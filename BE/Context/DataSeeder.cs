@@ -6,7 +6,15 @@ public static class DatabaseSeeder
 {
 	public static async Task SeedAsync(DataContext context)
 	{
-		if (context.Owners.Any() || context.Cars.Any()) return;
+		if (context.Cars.Any()) return;
+		var originalOwners = new List<Owner>();
+		if (context.Owners.Any())
+		{
+			originalOwners = await context.Owners.ToListAsync();
+
+			context.RemoveRange(originalOwners);
+			await context.SaveChangesAsync();
+		}
 
 		var ownerFaker = new Faker<Owner>()
 			.RuleFor(o => o.Name, f => f.Name.FullName());
