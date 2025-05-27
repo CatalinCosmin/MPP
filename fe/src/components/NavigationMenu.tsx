@@ -1,17 +1,15 @@
-// src/components/NavigationMenu.tsx
-
 import { Menu } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../pages/AuthContext"; // import context
+import { useAuth } from "../pages/AuthContext";
 import './NavigationMenu.css';
 
 export const NavigationMenu = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, role, logout } = useAuth(); // use context
+  const { isAuthenticated, role, logout } = useAuth();
 
   const handleClick = (e: any) => {
     if (e.key === "logout") {
-      logout(); // use context's logout
+      logout();
       navigate("/login");
     } else {
       navigate(e.key);
