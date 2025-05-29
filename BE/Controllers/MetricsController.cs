@@ -20,7 +20,7 @@ public class MetricsController : ControllerBase
 	[HttpGet]
 	public async Task<IActionResult> GetMetrics()
 	{
-		var metrics = _metricsService.CalculateMetric();
+		var metrics = await _metricsService.CalculateMetric();
 
 		return Ok(metrics);
 	}

@@ -15,17 +15,17 @@ public class MetricsService : IMetricsService
 		_ownerRepository = ownerRepository;
 	}
 	public async Task<Metrics> CalculateMetric()
-{
-	var (totalCars, totalPrice) = await _carRepository.GetCarAggregatesAsync();
-	var averagePrice = totalCars > 0 ? totalPrice / totalCars : 0;
-
-	return new Metrics
 	{
-		TotalCars = totalCars,
-		TotalPrice = totalPrice,
-		AveragePrice = averagePrice
-	};
-}
+		var (totalCars, totalPrice) = await _carRepository.GetCarAggregatesAsync();
+		var averagePrice = totalCars > 0 ? totalPrice / totalCars : 0;
+
+		return new Metrics
+		{
+			TotalCars = totalCars,
+			TotalPrice = totalPrice,
+			AveragePrice = averagePrice
+		};
+	}
 
 
 	public async Task<List<OwnerCarStat>> GetCarCountPerOwnerAsync(string? ownerNameFilter = null, string? brandFilter = null)
