@@ -18,7 +18,7 @@ export const MetricsPage = () => {
 
     const updateMetrics = async () => {
         try {
-            const response = await axios.get<Metrics>("https://localhost:7092/metrics", authHeaders());
+            const response = await axios.get<Metrics>(process.env.REACT_APP_API_URL + "/metrics", authHeaders());
             if (response.status === 200) {
                 const newMetrics = response.data;
 
@@ -82,7 +82,7 @@ export const MetricsPage = () => {
         }
 
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:7092/entityHub", {
+            .withUrl(process.env.REACT_APP_API_URL+"/entityHub", {
                 skipNegotiation: true,
                 transport: signalR.HttpTransportType.WebSockets,
             })
