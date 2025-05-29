@@ -7,7 +7,7 @@ export const AdminPage = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('jwt');
-    axios.get('https://localhost:7092/admin/monitored-users', {
+    axios.get(process.env.REACT_APP_API_URL + '/admin/monitored-users', {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => {
       setMonitoredUsers(res.data);
